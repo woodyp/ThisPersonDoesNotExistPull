@@ -7,9 +7,6 @@ namespace thispersondoesnotexist
 {
     internal class Program
     {
-        // The thread inside which the download happens
-        private Thread thrDownload;
-
         // The stream of data retrieved from the web server
         private Stream strResponse;
 
@@ -23,17 +20,19 @@ namespace thispersondoesnotexist
         private HttpWebResponse webResponse;
 
         // The progress of the download in percentage
-        private static int PercentProgress;
+        private static int percentProgress;
 
         // The delegate which we will call from the thread to update the form
-        private delegate void UpdateProgessCallback(Int64 BytesRead, Int64 TotalBytes);
+        private delegate void UpdatePProgressCallback(Int64 BytesRead, Int64 TotalBytes);
 
+        // This could be a command line option but it works as is
         private static string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\ThisPersonDoesNotExist";
 
         private static void Main(string[] args)
         {
             Console.WriteLine("I will save an image from thispersondoesnotexist.com each time you say to do so.");
             Console.WriteLine("They will be saved as jpg images in " + saveDir + " directory in numerical order.");
+            Console.WriteLine("");
 
             Console.WriteLine("Press F5 to get an image, any key to exit");
 
@@ -64,6 +63,8 @@ namespace thispersondoesnotexist
                 count += 1;
                 downloadFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\thispersondoesnotexist\\thispersondoesnotexist_" + count.ToString() + ".jpg";
             } while (File.Exists(downloadFileName));
+
+            Console.Write("\rDownloaded 0%   ");
 
             using (WebClient wcDownload = new WebClient())
             {
@@ -101,15 +102,12 @@ namespace thispersondoesnotexist
 
 
                         // Calculate the download progress in percentages
-                        PercentProgress = Convert.ToInt32((strLocal.Length * 100) / fileSize);
-                        // Make progress on the progress bar
+                        percentProgress = Convert.ToInt32((strLocal.Length * 100) / fileSize);
 
                         // Display the current progress on the form
-                        Console.Write("-");
-                        //lblProgress.Text = "Downloaded " + (strLocal.Length * 100) + " out of " + fileSize + " (" + PercentProgress + "%)";
+                        Console.Write("\rDownloaded {0}%   ", percentProgress);
                     }
-
-
+                    Console.Write("\rDownloaded 100%   ");
                 }
                 finally
                 {
