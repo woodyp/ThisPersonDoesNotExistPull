@@ -6,7 +6,7 @@ namespace thispersondoesnotexist
 {
     internal class Program
     {
-        private const string SiteUrl = "https://thispersondoesnotexist.com/";
+        private const string SiteUrl = "https://thispersondoesnotexist.com/image";
 
         private Stream _strResponse;
         private Stream _strLocal;
