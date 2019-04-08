@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 
@@ -19,8 +20,8 @@ namespace thispersondoesnotexist
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("I will save an image from thispersondoesnotexist.com each time you say to do so.");
-            Console.WriteLine("They will be saved as jpg images in " + _saveDir + " directory in numerical order.");
+            Console.WriteLine("An image from thispersondoesnotexist.com each time you say to do so.");
+            Console.WriteLine($"They will be saved as jpg images in {_saveDir} directory in numerical order.");
             Console.WriteLine("");
 
             Console.WriteLine("Press F5 to get an image, any key to exit");
@@ -34,6 +35,13 @@ namespace thispersondoesnotexist
 
                 Console.WriteLine("");
                 Console.WriteLine("Press F5 to get an image, any key to exit");
+            }
+
+            Console.WriteLine($"{Environment.NewLine}Open {_saveDir}? [y/n]");
+
+            if (Console.ReadKey().Key == ConsoleKey.Y)
+            {
+                Process.Start("explorer.exe", _saveDir);                
             }
         }
 
